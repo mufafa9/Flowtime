@@ -24,20 +24,14 @@
                    required>
         </form>
         
-        <div class="buttons">
-            <button class="start" id="startBtn" type="submit" form="taskForm">Start Work</button>
-            <button class="break" id="breakBtn" disabled>Take Break</button>
-            <button class="stop" id="stopBtn" disabled>Stop</button>
-            <button class="fullscreen" id="fullscreenBtn" type="button" aria-label="Toggle fullscreen mode">
+        <div class="controls">
+            <button id="startBtn" type="submit" form="taskForm">Start Work (S)</button>
+            <button id="breakBtn" disabled>Take Break (B)</button>
+            <button id="stopBtn" disabled>Stop (X)</button>
+            <button id="fullscreenBtn" type="button" aria-label="Toggle fullscreen mode">
                 <span class="fullscreen-icon">⛶</span>
             </button>
         </div>
-        <section id="fullscreen-controls" class="fullscreen-controls" hidden>
-            <button id="startBtnFS" type="button">Start Work (S)</button>
-            <button id="breakBtnFS" type="button">Take Break (B)</button>
-            <button id="stopBtnFS" type="button">Stop (X)</button>
-            <button id="exitFsBtn" type="button">Exit Fullscreen (F)</button>
-        </section>
         
         <section class="stats">
             <div class="stat-row">
