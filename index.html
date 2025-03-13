@@ -3,9 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Minimal Flowtime Timer</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    
+    <div class="container">
+        <h1>Flowtime Timer</h1>
+        
+        <div class="status" id="status">Ready to start</div>
+        
+        <div class="timer" id="timer">00:00:00</div>
+        
+        <input type="text" id="task" placeholder="What are you working on?">
+        
+        <div class="buttons">
+            <button class="start" id="startBtn">Start Work</button>
+            <button class="break" id="breakBtn" disabled>Break</button>
+            <button class="stop" id="stopBtn" disabled>Stop</button>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-row">
+                <span>Current:</span>
+                <span id="currentSession">-</span>
+            </div>
+            <div class="stat-row">
+                <span>Work duration:</span>
+                <span id="workDuration">-</span>
+            </div>
+            <div class="stat-row">
+                <span>Break time:</span>
+                <span id="breakTime">-</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
