@@ -1,3 +1,87 @@
+class SidebarManager {
+    constructor() {
+        this.sidebar = document.querySelector('.sidebar');
+        this.toggleButton = document.getElementById('toggleSidebar');
+        this.sidebarNavItems = document.querySelectorAll('.sidebar-nav li a');
+        
+        this.isMobile = window.innerWidth <= 768;
+        this.addEventListeners();
+    }
+
+    addEventListeners() {
+        // Toggle sidebar
+        this.toggleButton.addEventListener('click', () => {
+            this.toggleSidebar();
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            this.checkMobileView();
+        });
+
+        // Add click event to nav items
+        this.sidebarNavItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.setActiveItem(item);
+                
+                // On mobile, close sidebar after clicking an item
+                if (this.isMobile && this.sidebar.classList.contains('active')) {
+                    this.toggleSidebar();
+                }
+            });
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (this.isMobile && 
+                this.sidebar.classList.contains('active') && 
+                !this.sidebar.contains(e.target) && 
+                e.target !== this.toggleButton) {
+                this.toggleSidebar();
+            }
+        });
+    }
+
+    toggleSidebar() {
+        if (this.isMobile) {
+            this.sidebar.classList.toggle('active');
+        } else {
+            this.sidebar.classList.toggle('collapsed');
+        }
+    }
+
+    setActiveItem(item) {
+        // Remove active class from all items
+        this.sidebarNavItems.forEach(navItem => {
+            navItem.parentElement.classList.remove('active');
+        });
+        
+        // Add active class to clicked item
+        item.parentElement.classList.add('active');
+    }
+
+    checkMobileView() {
+        const wasMobile = this.isMobile;
+        this.isMobile = window.innerWidth <= 768;
+        
+        // If transitioning between mobile and desktop views
+        if (wasMobile !== this.isMobile) {
+            // Remove any mobile-specific classes when switching to desktop
+            if (!this.isMobile) {
+                this.sidebar.classList.remove('active');
+            } else {
+                this.sidebar.classList.remove('collapsed');
+            }
+        }
+    }
+}
+
+// Initialize the sidebar
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebarManager = new SidebarManager();
+});
+
 class FlowtimeTimer {
     constructor() {
         this.elements = this.getElements();

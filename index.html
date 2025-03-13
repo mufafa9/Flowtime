@@ -8,55 +8,75 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <main class="container">
-        <h1>Flowtime Timer</h1>
-        
-        <p class="status" id="status" aria-live="polite">Ready to start</p>
-        
-        <div class="timer" id="timer" aria-label="Timer display">00:00:00</div>
-        
-        <form id="taskForm" class="task-form">
-            <input type="text" 
-                   id="task" 
-                   name="task"
-                   placeholder="What are you working on?"
-                   aria-label="Enter your task"
-                   required>
-        </form>
-        
-        <div class="buttons">
-            <button class="start" id="startBtn" type="submit" form="taskForm">Start Work</button>
-            <button class="break" id="breakBtn" disabled>Take Break</button>
-            <button class="stop" id="stopBtn" disabled>Stop</button>
-            <button class="fullscreen" id="fullscreenBtn" type="button" aria-label="Toggle fullscreen mode">
-                <span class="fullscreen-icon">⛶</span>
-            </button>
-        </div>
-        <section id="fullscreen-controls" class="fullscreen-controls" hidden>
-            <button id="startBtnFS" type="button">Start Work (S)</button>
-            <button id="breakBtnFS" type="button">Take Break (B)</button>
-            <button id="stopBtnFS" type="button">Stop (X)</button>
-            <button id="exitFsBtn" type="button">Exit Fullscreen (F)</button>
-        </section>
-        
-        <section class="stats">
-            <div class="stat-row">
-                <span>Current:</span>
-                <span id="currentSession">-</span>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Flowtime</h2>
             </div>
-            <div class="stat-row">
-                <span>Work duration:</span>
-                <span id="workDuration">-</span>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="#"><span class="icon">⏱️</span>Timer</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="toggleSidebar" class="toggle-sidebar" aria-label="Toggle sidebar"><span>◀</span></button>
             </div>
-            <div class="stat-row">
-                <span>Recommended break:</span>
-                <span id="breakTime">-</span>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <h1>Flowtime Timer</h1>
+                
+                <p class="status" id="status" aria-live="polite">Ready to start</p>
+                
+                <div class="timer" id="timer" aria-label="Timer display">00:00:00</div>
+                
+                <form id="taskForm" class="task-form">
+                    <input type="text" 
+                           id="task" 
+                           name="task"
+                           placeholder="What are you working on?"
+                           aria-label="Enter your task"
+                           required>
+                </form>
+                
+                <div class="buttons">
+                    <button class="start" id="startBtn" type="submit" form="taskForm">Start Work</button>
+                    <button class="break" id="breakBtn" disabled>Take Break</button>
+                    <button class="stop" id="stopBtn" disabled>Stop</button>
+                    <button class="fullscreen" id="fullscreenBtn" type="button" aria-label="Toggle fullscreen mode">
+                        <span class="fullscreen-icon">⛶</span>
+                    </button>
+                </div>
+                <section id="fullscreen-controls" class="fullscreen-controls" hidden>
+                    <button id="startBtnFS" type="button">Start Work (S)</button>
+                    <button id="breakBtnFS" type="button">Take Break (B)</button>
+                    <button id="stopBtnFS" type="button">Stop (X)</button>
+                    <button id="exitFsBtn" type="button">Exit Fullscreen (F)</button>
+                </section>
+                
+                <section class="stats">
+                    <div class="stat-row">
+                        <span>Current:</span>
+                        <span id="currentSession">-</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Work duration:</span>
+                        <span id="workDuration">-</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Recommended break:</span>
+                        <span id="breakTime">-</span>
+                    </div>
+                    <div class="stat-row info-text">
+                        <small>Break time = Work duration ÷ 5</small>
+                    </div>
+                </section>
             </div>
-            <div class="stat-row info-text">
-                <small>Break time = Work duration ÷ 5</small>
-            </div>
-        </section>
-    </main>
+        </main>
+    </div>
 
     <script src="script.js" defer></script>
 </body>
