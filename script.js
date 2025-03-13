@@ -214,4 +214,7 @@ class FlowtimeTimer {
 }
 
 // Initialize the timer
-const flowtimeTimer = new FlowtimeTimer();
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("FlowtimeTimer initializing...");
+    const flowtimeTimer = new FlowtimeTimer();
+});
