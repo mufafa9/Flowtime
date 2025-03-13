@@ -3,6 +3,18 @@ class FlowtimeTimer {
         this.elements = this.getElements();
         this.state = this.getInitialState();
         this.initializeEventListeners();
+        this.elements.fullscreenBtn = document.getElementById('fullscreenBtn');
+        this.isFullscreen = false;
+        
+        // Add fullscreen event listener
+        this.elements.fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
+        
+        // Add escape key listener
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.isFullscreen) {
+                this.exitFullscreen();
+            }
+        });
     }
 
     getElements() {
@@ -16,7 +28,8 @@ class FlowtimeTimer {
             status: document.getElementById('status'),
             currentSession: document.getElementById('currentSession'),
             workDuration: document.getElementById('workDuration'),
-            breakTime: document.getElementById('breakTime')
+            breakTime: document.getElementById('breakTime'),
+            fullscreenBtn: document.getElementById('fullscreenBtn')
         };
     }
 
@@ -132,6 +145,26 @@ class FlowtimeTimer {
         
         this.elements.status.textContent = 'Ready to start';
         this.elements.currentSession.textContent = '-';
+    }
+
+    toggleFullscreen() {
+        if (this.isFullscreen) {
+            this.exitFullscreen();
+        } else {
+            this.enterFullscreen();
+        }
+    }
+
+    enterFullscreen() {
+        document.body.classList.add('fullscreen-mode');
+        this.elements.fullscreenBtn.querySelector('.fullscreen-icon').textContent = '⛗';
+        this.isFullscreen = true;
+    }
+
+    exitFullscreen() {
+        document.body.classList.remove('fullscreen-mode');
+        this.elements.fullscreenBtn.querySelector('.fullscreen-icon').textContent = '⛶';
+        this.isFullscreen = false;
     }
 }
 
