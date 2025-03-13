@@ -302,3 +302,168 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("FlowtimeTimer initializing...");
     const flowtimeTimer = new FlowtimeTimer();
 });
+class NoisePlayer {
+    constructor() {
+        this.audioContext = null;
+        this.noiseNodes = {};
+        this.gainNode = null;
+        this.currentNoise = null;
+        
+        this.elements = {
+            whiteNoiseBtn: document.getElementById('whiteNoiseBtn'),
+            pinkNoiseBtn: document.getElementById('pinkNoiseBtn'),
+            brownNoiseBtn: document.getElementById('brownNoiseBtn'),
+            stopNoiseBtn: document.getElementById('stopNoiseBtn'),
+            volumeSlider: document.getElementById('volumeSlider')
+        };
+        
+        this.initEventListeners();
+    }
+    
+    initAudio() {
+        if (this.audioContext) return;
+        
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        this.gainNode = this.audioContext.createGain();
+        this.gainNode.gain.value = this.elements.volumeSlider.value;
+        this.gainNode.connect(this.audioContext.destination);
+    }
+    
+    initEventListeners() {
+        this.elements.whiteNoiseBtn.addEventListener('click', () => this.playNoise('white'));
+        this.elements.pinkNoiseBtn.addEventListener('click', () => this.playNoise('pink'));
+        this.elements.brownNoiseBtn.addEventListener('click', () => this.playNoise('brown'));
+        this.elements.stopNoiseBtn.addEventListener('click', () => this.stopNoise());
+        this.elements.volumeSlider.addEventListener('input', () => this.updateVolume());
+    }
+    
+    createWhiteNoise() {
+        const bufferSize = 2 * this.audioContext.sampleRate;
+        const noiseBuffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        
+        for (let i = 0; i < bufferSize; i++) {
+            output[i] = Math.random() * 2 - 1;
+        }
+        
+        const whiteNoise = this.audioContext.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+        whiteNoise.loop = true;
+        
+        return whiteNoise;
+    }
+    
+    createPinkNoise() {
+        const bufferSize = 2 * this.audioContext.sampleRate;
+        const noiseBuffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        
+        let b0, b1, b2, b3, b4, b5, b6;
+        b0 = b1 = b2 = b3 = b4 = b5 = b6 = 0.0;
+        
+        for (let i = 0; i < bufferSize; i++) {
+            const white = Math.random() * 2 - 1;
+            
+            b0 = 0.99886 * b0 + white * 0.0555179;
+            b1 = 0.99332 * b1 + white * 0.0750759;
+            b2 = 0.96900 * b2 + white * 0.1538520;
+            b3 = 0.86650 * b3 + white * 0.3104856;
+            b4 = 0.55000 * b4 + white * 0.5329522;
+            b5 = -0.7616 * b5 - white * 0.0168980;
+            
+            output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+            output[i] *= 0.11; // (roughly) compensate for gain
+            
+            b6 = white * 0.115926;
+        }
+        
+        const pinkNoise = this.audioContext.createBufferSource();
+        pinkNoise.buffer = noiseBuffer;
+        pinkNoise.loop = true;
+        
+        return pinkNoise;
+    }
+    
+    createBrownNoise() {
+        const bufferSize = 2 * this.audioContext.sampleRate;
+        const noiseBuffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        
+        let lastOut = 0.0;
+        
+        for (let i = 0; i < bufferSize; i++) {
+            const white = Math.random() * 2 - 1;
+            output[i] = (lastOut + (0.02 * white)) / 1.02;
+            lastOut = output[i];
+            output[i] *= 3.5; // (roughly) compensate for gain
+        }
+        
+        const brownNoise = this.audioContext.createBufferSource();
+        brownNoise.buffer = noiseBuffer;
+        brownNoise.loop = true;
+        
+        return brownNoise;
+    }
+    
+    createNoise(type) {
+        switch(type) {
+            case 'white': return this.createWhiteNoise();
+            case 'pink': return this.createPinkNoise();
+            case 'brown': return this.createBrownNoise();
+            default: return this.createWhiteNoise();
+        }
+    }
+    
+    playNoise(type) {
+        this.initAudio();
+        this.stopNoise();
+        
+        const noise = this.createNoise(type);
+        noise.connect(this.gainNode);
+        noise.start();
+        
+        this.noiseNodes[type] = noise;
+        this.currentNoise = type;
+        
+        // Update button states
+        this.updateButtonStates();
+    }
+    
+    stopNoise() {
+        if (this.currentNoise && this.noiseNodes[this.currentNoise]) {
+            this.noiseNodes[this.currentNoise].stop();
+            delete this.noiseNodes[this.currentNoise];
+            this.currentNoise = null;
+            
+            // Update button states
+            this.updateButtonStates();
+        }
+    }
+    
+    updateButtonStates() {
+        // Reset all buttons
+        this.elements.whiteNoiseBtn.classList.remove('active');
+        this.elements.pinkNoiseBtn.classList.remove('active');
+        this.elements.brownNoiseBtn.classList.remove('active');
+        
+        // Set active button
+        if (this.currentNoise === 'white') {
+            this.elements.whiteNoiseBtn.classList.add('active');
+        } else if (this.currentNoise === 'pink') {
+            this.elements.pinkNoiseBtn.classList.add('active');
+        } else if (this.currentNoise === 'brown') {
+            this.elements.brownNoiseBtn.classList.add('active');
+        }
+    }
+    
+    updateVolume() {
+        if (this.gainNode) {
+            this.gainNode.gain.value = this.elements.volumeSlider.value;
+        }
+    }
+}
+
+// Initialize the noise player when the DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const noisePlayer = new NoisePlayer();
+});

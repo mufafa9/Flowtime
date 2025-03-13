@@ -50,14 +50,16 @@ body {
 
 /* Sidebar Styles */
 .sidebar {
-  width: var(--sidebar-width);
-  background-color: var(--sidebar-bg);
-  color: var(--sidebar-text);
-  display: flex;
-  flex-direction: column;
-  transition: width var(--transition);
-  position: relative;
-  z-index: 10;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh; /* Full height */
+    width: 250px; /* Adjust as needed */
+    background: #2c2f3e;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
 }
 
 .sidebar.collapsed {
@@ -500,6 +502,112 @@ button:disabled {
 .fullscreen-mode h1,
 .fullscreen-mode .stats:not(.essential-stats) {
   display: none;
+}
+/* Noise Controls */
+.noise-controls {
+  background: var(--card-color);
+  padding: 16px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  text-align: center;
+  margin-top: 20px;
+}
+
+.noise-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 12px;
+}
+
+.noise-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.noise-btn {
+  background: var(--primary-color);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+  border: none;
+  cursor: pointer;
+}
+
+.noise-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.noise-stop {
+  background: var(--danger-color);
+}
+
+.noise-stop:hover {
+  background: var(--danger-hover);
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  margin-top: 8px;
+}
+
+.volume-control input {
+  appearance: none;
+  width: 100px;
+  height: 6px;
+  border-radius: 5px;
+  background: var(--border-color);
+  outline: none;
+  transition: var(--transition);
+}
+
+.volume-control input::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.volume-control input::-webkit-slider-thumb:hover {
+  background: var(--primary-hover);
+}
+
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .noise-btn {
+    background-color: #2d2d2d;
+    border-color: #444;
+  }
+  
+  .noise-btn:hover:not(:disabled) {
+    background-color: #3d3d3d;
+  }
+  
+  .noise-stop {
+    background-color: #442a2d;
+    color: #f1bec6;
+  }
+  
+  .noise-stop:hover:not(:disabled) {
+    background-color: #543438;
+  }
 }
 
 /* Dark mode */

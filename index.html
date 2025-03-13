@@ -6,6 +6,12 @@
     <meta name="description" content="Flowtime technique timer - take breaks 1/5th of your work duration">
     <title>Flowtime Timer</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 <body>
     <div class="layout">
@@ -16,7 +22,8 @@
             </div>
             <nav class="sidebar-nav">
                 <ul>
-                    <li class="active"><a href="#"><span class="icon">⏱️</span>Timer</a></li>
+                    <li class="active"><a href="#flow-timer"><span class="icon">⏱️</span> Timer</a></li>
+                    <li><a href="#focus-sounds"><span class="icon">🎵</span> Focus Sounds</a></li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
@@ -26,7 +33,7 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <div class="container">
+            <div id="flow-timer" class="container">
                 <h1>Flowtime Timer</h1>
                 
                 <p class="status" id="status" aria-live="polite">Ready to start</p>
@@ -78,6 +85,35 @@
         </main>
     </div>
 
+    <!-- Focus Sounds Section -->
+    <section id="focus-sounds" class="noise-controls">
+        <h3 class="noise-title">Focus Sounds</h3>
+        <div class="noise-buttons">
+            <button id="whiteNoiseBtn" class="noise-btn">White Noise</button>
+            <button id="pinkNoiseBtn" class="noise-btn">Pink Noise</button>
+            <button id="brownNoiseBtn" class="noise-btn">Brown Noise</button>
+            <button id="stopNoiseBtn" class="noise-btn noise-stop">Stop Sound</button>
+        </div>
+        <div class="volume-control">
+            <label for="volumeSlider">Volume</label>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5">
+        </div>
+    </section>
+
+    <script>
+        // JavaScript for smooth scrolling (fallback)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener("click", function(event) {
+                event.preventDefault();
+                const targetId = this.getAttribute("href").substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: "smooth" });
+                }
+            });
+        });
+    </script>
+    
     <script src="script.js" defer></script>
 </body>
 </html>
