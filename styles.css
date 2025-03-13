@@ -110,3 +110,17 @@ button:disabled {
     border-top: 1px solid #eee;
     padding-top: 16px;
 }
+.info-text {
+    justify-content: center;
+    color: var(--text-color);
+    opacity: 0.7;
+    font-size: 0.8rem;
+    margin-top: 8px;
+}
+
+.break:not(:disabled)::after {
+    content: attr(data-break-time);
+    display: block;
+    font-size: 0.8rem;
+    opacity: 0.9;
+}

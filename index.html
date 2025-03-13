@@ -3,26 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Flowtime Timer</title>
+    <meta name="description" content="Flowtime technique timer - take breaks 1/5th of your work duration">
+    <title>Flowtime Timer</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <main class="container">
         <h1>Flowtime Timer</h1>
         
-        <div class="status" id="status">Ready to start</div>
+        <p class="status" id="status" aria-live="polite">Ready to start</p>
         
-        <div class="timer" id="timer">00:00:00</div>
+        <div class="timer" id="timer" aria-label="Timer display">00:00:00</div>
         
-        <input type="text" id="task" placeholder="What are you working on?">
+        <form id="taskForm" class="task-form">
+            <input type="text" 
+                   id="task" 
+                   name="task"
+                   placeholder="What are you working on?"
+                   aria-label="Enter your task"
+                   required>
+        </form>
         
         <div class="buttons">
-            <button class="start" id="startBtn">Start Work</button>
-            <button class="break" id="breakBtn" disabled>Break</button>
+            <button class="start" id="startBtn" type="submit" form="taskForm">Start Work</button>
+            <button class="break" id="breakBtn" disabled>Take Break (1/5 of work time)</button>
             <button class="stop" id="stopBtn" disabled>Stop</button>
         </div>
         
-        <div class="stats">
+        <section class="stats">
             <div class="stat-row">
                 <span>Current:</span>
                 <span id="currentSession">-</span>
@@ -32,11 +40,14 @@
                 <span id="workDuration">-</span>
             </div>
             <div class="stat-row">
-                <span>Break time:</span>
+                <span>Recommended break:</span>
                 <span id="breakTime">-</span>
             </div>
-        </div>
-    </div>
+            <div class="stat-row info-text">
+                <small>Break time = Work duration ÷ 5</small>
+            </div>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>

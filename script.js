@@ -1,99 +1,139 @@
-const timer = document.getElementById('timer');
-const task = document.getElementById('task');
-const startBtn = document.getElementById('startBtn');
-const breakBtn = document.getElementById('breakBtn');
-const stopBtn = document.getElementById('stopBtn');
-const status = document.getElementById('status');
-const currentSession = document.getElementById('currentSession');
-const workDuration = document.getElementById('workDuration');
-const breakTime = document.getElementById('breakTime');
-
-let interval;
-let startTime;
-let elapsedSeconds = 0;
-let isBreak = false;
-let lastWorkDuration = 0;
-
-function formatTime(seconds) {
-    const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
-    const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-    const s = Math.floor(seconds % 60).toString().padStart(2, '0');
-    return `${h}:${m}:${s}`;
-}
-
-function updateTimer() {
-    const now = Date.now();
-    elapsedSeconds = Math.floor((now - startTime) / 1000);
-    timer.textContent = formatTime(elapsedSeconds);
-}
-
-function startWork() {
-    if (!task.value.trim()) {
-        task.focus();
-        return;
+class FlowtimeTimer {
+    constructor() {
+        this.elements = this.getElements();
+        this.state = this.getInitialState();
+        this.initializeEventListeners();
     }
-    
-    startTime = Date.now();
-    isBreak = false;
-    
-    interval = setInterval(updateTimer, 1000);
-    startBtn.disabled = true;
-    breakBtn.disabled = false;
-    stopBtn.disabled = false;
-    
-    status.textContent = `Working: ${task.value}`;
-    currentSession.textContent = 'Work';
-}
 
-function startBreak() {
-    // Save work duration
-    lastWorkDuration = elapsedSeconds;
-    workDuration.textContent = formatTime(lastWorkDuration);
-    
-    // Calculate recommended break
-    const recommendedBreak = Math.ceil(lastWorkDuration / 5);
-    breakTime.textContent = formatTime(recommendedBreak);
-    
-    // Reset timer for break
-    clearInterval(interval);
-    startTime = Date.now();
-    elapsedSeconds = 0;
-    isBreak = true;
-    
-    // Start break timer
-    interval = setInterval(updateTimer, 1000);
-    startBtn.disabled = false;
-    breakBtn.disabled = true;
-    
-    status.textContent = 'Taking a break';
-    currentSession.textContent = 'Break';
-}
-
-function stopTimer() {
-    clearInterval(interval);
-    
-    if (!isBreak) {
-        lastWorkDuration = elapsedSeconds;
-        workDuration.textContent = formatTime(lastWorkDuration);
+    getElements() {
+        return {
+            timer: document.getElementById('timer'),
+            task: document.getElementById('task'),
+            taskForm: document.getElementById('taskForm'),
+            startBtn: document.getElementById('startBtn'),
+            breakBtn: document.getElementById('breakBtn'),
+            stopBtn: document.getElementById('stopBtn'),
+            status: document.getElementById('status'),
+            currentSession: document.getElementById('currentSession'),
+            workDuration: document.getElementById('workDuration'),
+            breakTime: document.getElementById('breakTime')
+        };
     }
-    
-    timer.textContent = '00:00:00';
-    elapsedSeconds = 0;
-    
-    startBtn.disabled = false;
-    breakBtn.disabled = true;
-    stopBtn.disabled = true;
-    
-    status.textContent = 'Ready to start';
-    currentSession.textContent = '-';
+
+    getInitialState() {
+        return {
+            interval: null,
+            startTime: null,
+            elapsedSeconds: 0,
+            isBreak: false,
+            lastWorkDuration: 0,
+            recommendedBreak: 0
+        };
+    }
+
+    initializeEventListeners() {
+        this.elements.taskForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.startWork();
+        });
+        this.elements.breakBtn.addEventListener('click', () => this.startBreak());
+        this.elements.stopBtn.addEventListener('click', () => this.stopTimer());
+
+        window.addEventListener('beforeunload', (e) => {
+            if (this.state.interval) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    }
+
+    formatTime(seconds) {
+        const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+        const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+        const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+        return `${h}:${m}:${s}`;
+    }
+
+    updateTimer() {
+        const now = Date.now();
+        this.state.elapsedSeconds = Math.floor((now - this.state.startTime) / 1000);
+        this.elements.timer.textContent = this.formatTime(this.state.elapsedSeconds);
+        
+        if (!this.state.isBreak) {
+            // During work: update recommended break time continuously
+            this.state.recommendedBreak = Math.ceil(this.state.elapsedSeconds / 5);
+            this.elements.breakTime.textContent = this.formatTime(this.state.recommendedBreak);
+            this.elements.breakBtn.setAttribute('data-break-time', 
+                `(${this.formatTime(this.state.recommendedBreak)})`);
+        }
+        
+        document.title = `(${this.formatTime(this.state.elapsedSeconds)}) Flowtime Timer`;
+    }
+
+    startWork() {
+        const taskValue = this.elements.task.value.trim();
+        if (!taskValue) return;
+
+        this.state.startTime = Date.now();
+        this.state.isBreak = false;
+        this.state.elapsedSeconds = 0;
+        
+        this.state.interval = setInterval(() => this.updateTimer(), 1000);
+        this.elements.startBtn.disabled = true;
+        this.elements.breakBtn.disabled = false;
+        this.elements.stopBtn.disabled = false;
+        
+        this.elements.status.textContent = `Working on: ${taskValue}`;
+        this.elements.currentSession.textContent = 'Work';
+        this.elements.breakTime.textContent = '00:00:00';
+    }
+
+    startBreak() {
+        // Save work duration
+        this.state.lastWorkDuration = this.state.elapsedSeconds;
+        this.elements.workDuration.textContent = this.formatTime(this.state.lastWorkDuration);
+        
+        // Calculate break time (1/5 of work time)
+        this.state.recommendedBreak = Math.ceil(this.state.lastWorkDuration / 5);
+        this.elements.breakTime.textContent = this.formatTime(this.state.recommendedBreak);
+        
+        // Reset and start break timer
+        clearInterval(this.state.interval);
+        this.state.startTime = Date.now();
+        this.state.elapsedSeconds = 0;
+        this.state.isBreak = true;
+        
+        this.state.interval = setInterval(() => this.updateTimer(), 1000);
+        this.elements.startBtn.disabled = false;
+        this.elements.breakBtn.disabled = true;
+        this.elements.stopBtn.disabled = false;
+        
+        this.elements.status.textContent = 
+            `Taking a break (${this.formatTime(this.state.recommendedBreak)} recommended)`;
+        this.elements.currentSession.textContent = 'Break';
+    }
+
+    stopTimer() {
+        clearInterval(this.state.interval);
+        
+        if (!this.state.isBreak) {
+            this.state.lastWorkDuration = this.state.elapsedSeconds;
+            this.elements.workDuration.textContent = this.formatTime(this.state.lastWorkDuration);
+        }
+        
+        this.elements.timer.textContent = '00:00:00';
+        document.title = 'Flowtime Timer';
+        this.state.elapsedSeconds = 0;
+        
+        this.elements.startBtn.disabled = false;
+        this.elements.breakBtn.disabled = true;
+        this.elements.stopBtn.disabled = true;
+        this.elements.breakBtn.removeAttribute('data-break-time');
+        
+        this.elements.status.textContent = 'Ready to start';
+        this.elements.currentSession.textContent = '-';
+    }
 }
 
-startBtn.addEventListener('click', startWork);
-breakBtn.addEventListener('click', startBreak);
-stopBtn.addEventListener('click', stopTimer);
-
-task.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter' && !startBtn.disabled) {
-        startWork();
-    }
-});
+// Initialize the timer
+const flowtimeTimer = new FlowtimeTimer();
