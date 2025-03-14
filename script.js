@@ -283,9 +283,12 @@ class FlowtimeTimer {
         document.body.classList.add('fullscreen-mode');
         this.elements.fullscreenBtn.querySelector('.fullscreen-icon').textContent = '⛗';
         this.elements.fullscreenControls.hidden = false;
+        
+        // Hide focus sounds section in fullscreen mode
+        document.getElementById('focus-sounds').style.display = 'none';
+        
         this.isFullscreen = true;
     }
-
     exitFullscreen() {
         if (document.fullscreenElement) {
             document.exitFullscreen();
@@ -293,6 +296,10 @@ class FlowtimeTimer {
         document.body.classList.remove('fullscreen-mode');
         this.elements.fullscreenBtn.querySelector('.fullscreen-icon').textContent = '⛶';
         this.elements.fullscreenControls.hidden = true;
+        
+        // Show focus sounds section again
+        document.getElementById('focus-sounds').style.display = '';
+        
         this.isFullscreen = false;
     }
 }
@@ -349,7 +356,6 @@ class NoisePlayer {
         const whiteNoise = this.audioContext.createBufferSource();
         whiteNoise.buffer = noiseBuffer;
         whiteNoise.loop = true;
-        
         return whiteNoise;
     }
     
