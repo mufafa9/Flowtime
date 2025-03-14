@@ -26,7 +26,7 @@
   --fullscreen-bg: rgba(0, 0, 0, 0.95);
   --fullscreen-text: #fff;
   --sidebar-width: 240px;
-  --sidebar-collapsed-width: 60px;
+  --sidebar-collapsed-width: 50px;
   --sidebar-bg: #1a1a2e;
   --sidebar-text: #e0e0e0;
   --sidebar-hover: rgba(255, 255, 255, 0.1);
@@ -64,6 +64,11 @@ body {
 
 .sidebar.collapsed {
   width: var(--sidebar-collapsed-width);
+  .sidebar-header h2 {
+    transition: opacity 0.6s ease-in-out;
+    display: none;
+    opacity: 0;
+  }
 }
 
 .sidebar-header {
