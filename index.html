@@ -99,20 +99,6 @@
             <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5">
         </div>
     </section>
-
-    <script>
-        // JavaScript for smooth scrolling (fallback)
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener("click", function(event) {
-                event.preventDefault();
-                const targetId = this.getAttribute("href").substring(1);
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: "smooth" });
-                }
-            });
-        });
-    </script>
     
     <script src="script.js" defer></script>
 </body>
