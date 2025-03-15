@@ -309,6 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("FlowtimeTimer initializing...");
     const flowtimeTimer = new FlowtimeTimer();
 });
+
 class NoisePlayer {
     constructor() {
         this.audioContext = null;
@@ -473,14 +474,15 @@ class NoisePlayer {
 document.addEventListener('DOMContentLoaded', () => {
     const noisePlayer = new NoisePlayer();
 });
+
 // JavaScript for smooth scrolling (fallback)
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener("click", function(event) {
-                event.preventDefault();
-                const targetId = this.getAttribute("href").substring(1);
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: "smooth" });
-                }
-            });
-        });
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener("click", function(event) {
+        event.preventDefault();
+        const targetId = this.getAttribute("href").substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: "smooth" });
+        }
+    });
+});
