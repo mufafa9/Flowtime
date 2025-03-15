@@ -3,7 +3,6 @@
 A modern, minimalist timer application implementing the Flowtime Technique - a flexible alternative to the Pomodoro method. Instead of fixed work/break intervals, Flowtime allows natural breaking points with recommended break durations based on work time.
 
 ## Features
-
 - Clean, responsive interface
 - Automatic break time calculation (1/5th of work duration)
 - Fullscreen focus mode
@@ -12,7 +11,7 @@ A modern, minimalist timer application implementing the Flowtime Technique - a f
 - Save prompt before closing active sessions
 - Session statistics tracking
 
-## How It Works
+### How It Works
 
 1. Enter your task in the input field
 2. Click "Start Work" to begin your work session
@@ -21,7 +20,7 @@ A modern, minimalist timer application implementing the Flowtime Technique - a f
    - Recommended break duration is calculated as 1/5th of your work time
 5. Click "Stop" to end your session completely
 
-## Installation
+### Installation
 
 1. Clone this repository:
 ```bash
@@ -47,6 +46,6 @@ Use the fullscreen button (⛶) in the corner for a distraction-free experience.
 - Responsive Design
 - Dark Mode Support
 
-## License
+# License
 
 MIT License
