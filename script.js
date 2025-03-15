@@ -224,6 +224,9 @@ class NoisePlayer {
         this.noiseNodes = {};
         this.gainNode = null;
         this.currentNoise = null;
+        this.bufferCache = {};
+        this.initAudio();
+        this.preloadSounds();
         
         this.elements = {
             whiteNoiseBtn: document.getElementById('whiteNoiseBtn'),
@@ -234,6 +237,70 @@ class NoisePlayer {
         };
         
         this.initEventListeners();
+    }
+    
+    async preloadSounds() {
+        const types = ['white', 'pink', 'brown'];
+        for (const type of types) {
+            await this.cacheNoiseBuffer(type);
+        }
+    }
+
+    async cacheNoiseBuffer(type) {
+        if (!this.audioContext) this.initAudio();
+        if (this.bufferCache[type]) return this.bufferCache[type];
+
+        const buffer = await this.generateNoiseBuffer(type);
+        this.bufferCache[type] = buffer;
+        return buffer;
+    }
+
+    async generateNoiseBuffer(type) {
+        const bufferSize = 2 * this.audioContext.sampleRate;
+        const noiseBuffer = this.audioContext.createBuffer(2, bufferSize, this.audioContext.sampleRate);
+        
+        // Generate noise for both channels for better stereo sound
+        for (let channel = 0; channel < 2; channel++) {
+            const output = noiseBuffer.getChannelData(channel);
+            
+            if (type === 'white') {
+                // Improved white noise using Audio Worklet
+                for (let i = 0; i < bufferSize; i++) {
+                    // Using multiple random samples for richer sound
+                    output[i] = (Math.random() + Math.random() + Math.random() - 1.5) * 0.5;
+                }
+            } else if (type === 'pink') {
+                let b0, b1, b2, b3, b4, b5, b6;
+                b0 = b1 = b2 = b3 = b4 = b5 = b6 = 0.0;
+                
+                for (let i = 0; i < bufferSize; i++) {
+                    const white = Math.random() * 2 - 1;
+                    
+                    b0 = 0.99886 * b0 + white * 0.0555179;
+                    b1 = 0.99332 * b1 + white * 0.0750759;
+                    b2 = 0.96900 * b2 + white * 0.1538520;
+                    b3 = 0.86650 * b3 + white * 0.3104856;
+                    b4 = 0.55000 * b4 + white * 0.5329522;
+                    b5 = -0.7616 * b5 - white * 0.0168980;
+                    
+                    output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+                    output[i] *= 0.11; // (roughly) compensate for gain
+                    
+                    b6 = white * 0.115926;
+                }
+            } else if (type === 'brown') {
+                let lastOut = 0.0;
+                
+                for (let i = 0; i < bufferSize; i++) {
+                    const white = Math.random() * 2 - 1;
+                    output[i] = (lastOut + (0.02 * white)) / 1.02;
+                    lastOut = output[i];
+                    output[i] *= 3.5; // (roughly) compensate for gain
+                }
+            }
+        }
+
+        return noiseBuffer;
     }
     
     initAudio() {
@@ -321,26 +388,35 @@ class NoisePlayer {
     }
     
     createNoise(type) {
-        switch(type) {
-            case 'white': return this.createWhiteNoise();
-            case 'pink': return this.createPinkNoise();
-            case 'brown': return this.createBrownNoise();
-            default: return this.createWhiteNoise();
-        }
+        const source = this.audioContext.createBufferSource();
+        source.buffer = this.bufferCache[type];
+        source.loop = true;
+        
+        // Add a gentle filter for smoother sound
+        const filter = this.audioContext.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 18000;
+        filter.Q.value = 0.5;
+        
+        source.connect(filter);
+        filter.connect(this.gainNode);
+        
+        return source;
     }
-    
-    playNoise(type) {
+
+    async playNoise(type) {
         this.initAudio();
         this.stopNoise();
         
+        if (!this.bufferCache[type]) {
+            await this.cacheNoiseBuffer(type);
+        }
+        
         const noise = this.createNoise(type);
-        noise.connect(this.gainNode);
         noise.start();
         
         this.noiseNodes[type] = noise;
         this.currentNoise = type;
-        
-        // Update button states
         this.updateButtonStates();
     }
     
