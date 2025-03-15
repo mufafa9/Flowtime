@@ -1,0 +1,26 @@
+name: Super Linter
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    name: Run Super Linter
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read  # Allows reading the repo
+      checks: write   # Allows writing status checks (✅ ❌)
+      pull-requests: write  # Enables PR check updates
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Super Linter
+        uses: super-linter/super-linter@v6
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Uses the built-in token
