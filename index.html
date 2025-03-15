@@ -6,83 +6,62 @@
     <meta name="description" content="Flowtime technique timer - take breaks 1/5th of your work duration">
     <title>Flowtime Timer</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-    </style>
 </head>
 <body>
-    <div class="layout">
-        <!-- Main Content -->
-        <main class="main-content">
-            <div id="flow-timer" class="container">
-                <h1>Flowtime Timer</h1>
-                
-                <p class="status" id="status" aria-live="polite">Ready to start</p>
-                
-                <div class="timer" id="timer" aria-label="Timer display">00:00:00</div>
-                
-                <form id="taskForm" class="task-form">
-                    <input type="text" 
-                           id="task" 
-                           name="task"
-                           placeholder="What are you working on?"
-                           aria-label="Enter your task"
-                           required>
-                </form>
-                
-                <div class="buttons">
-                    <button class="start" id="startBtn" type="submit" form="taskForm">Start Work</button>
-                    <button class="break" id="breakBtn" disabled>Take Break</button>
-                    <button class="stop" id="stopBtn" disabled>Stop</button>
-                    <button class="fullscreen" id="fullscreenBtn" type="button" aria-label="Toggle fullscreen mode">
-                        <span class="fullscreen-icon">⛶</span>
-                    </button>
-                </div>
-                <section id="fullscreen-controls" class="fullscreen-controls" hidden>
-                    <button id="startBtnFS" type="button">Start Work (S)</button>
-                    <button id="breakBtnFS" type="button">Take Break (B)</button>
-                    <button id="stopBtnFS" type="button">Stop (X)</button>
-                    <button id="exitFsBtn" type="button">Exit Fullscreen (F)</button>
-                </section>
-                
-                <section class="stats">
-                    <div class="stat-row">
-                        <span>Current:</span>
-                        <span id="currentSession">-</span>
-                    </div>
-                    <div class="stat-row">
-                        <span>Work duration:</span>
-                        <span id="workDuration">-</span>
-                    </div>
-                    <div class="stat-row">
-                        <span>Recommended break:</span>
-                        <span id="breakTime">-</span>
-                    </div>
-                    <div class="stat-row info-text">
-                        <small>Break time = Work duration ÷ 5</small>
-                    </div>
-                </section>
+    <main class="main-content">
+        <div id="flow-timer" class="container">
+            <h1>Flowtime Timer</h1>
+            <p class="status" id="status" aria-live="polite">Ready to start</p>
+            <div class="timer" id="timer" aria-label="Timer display">00:00:00</div>
+            
+            <form id="taskForm" class="task-form">
+                <input type="text" 
+                       id="task" 
+                       name="task"
+                       placeholder="What are you working on?"
+                       aria-label="Enter your task"
+                       required>
+            </form>
+            
+            <div class="buttons">
+                <button class="start" id="startBtn" type="submit" form="taskForm">Start Work</button>
+                <button class="break" id="breakBtn" disabled>Take Break</button>
+                <button class="stop" id="stopBtn" disabled>Stop</button>
             </div>
-        </main>
-    </div>
+            
+            <section class="stats">
+                <div class="stat-row">
+                    <span>Current:</span>
+                    <span id="currentSession">-</span>
+                </div>
+                <div class="stat-row">
+                    <span>Work duration:</span>
+                    <span id="workDuration">-</span>
+                </div>
+                <div class="stat-row">
+                    <span>Recommended break:</span>
+                    <span id="breakTime">-</span>
+                </div>
+                <div class="stat-row info-text">
+                    <small>Break time = Work duration ÷ 5</small>
+                </div>
+            </section>
 
-    <!-- Focus Sounds Section -->
-    <section id="focus-sounds" class="noise-controls">
-        <h3 class="noise-title">Focus Sounds</h3>
-        <div class="noise-buttons">
-            <button id="whiteNoiseBtn" class="noise-btn">White Noise</button>
-            <button id="pinkNoiseBtn" class="noise-btn">Pink Noise</button>
-            <button id="brownNoiseBtn" class="noise-btn">Brown Noise</button>
-            <button id="stopNoiseBtn" class="noise-btn noise-stop">Stop Sound</button>
+            <section id="focus-sounds" class="noise-controls">
+                <h3 class="noise-title">Focus Sounds</h3>
+                <div class="noise-buttons">
+                    <button id="whiteNoiseBtn" class="noise-btn">White Noise</button>
+                    <button id="pinkNoiseBtn" class="noise-btn">Pink Noise</button>
+                    <button id="brownNoiseBtn" class="noise-btn">Brown Noise</button>
+                    <button id="stopNoiseBtn" class="noise-btn noise-stop">Stop Sound</button>
+                </div>
+                <div class="volume-control">
+                    <label for="volumeSlider">Volume</label>
+                    <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5">
+                </div>
+            </section>
         </div>
-        <div class="volume-control">
-            <label for="volumeSlider">Volume</label>
-            <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5">
-        </div>
-    </section>
+    </main>
     
     <script src="script.js" defer></script>
 </body>

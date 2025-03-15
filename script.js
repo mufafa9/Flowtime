@@ -100,13 +100,7 @@ class FlowtimeTimer {
             status: document.getElementById('status'),
             currentSession: document.getElementById('currentSession'),
             workDuration: document.getElementById('workDuration'),
-            breakTime: document.getElementById('breakTime'),
-            fullscreenBtn: document.getElementById('fullscreenBtn'),
-            fullscreenControls: document.getElementById('fullscreen-controls'),
-            startBtnFS: document.getElementById('startBtnFS'),
-            breakBtnFS: document.getElementById('breakBtnFS'),
-            stopBtnFS: document.getElementById('stopBtnFS'),
-            exitFsBtn: document.getElementById('exitFsBtn')
+            breakTime: document.getElementById('breakTime')
         };
     }
 
@@ -128,60 +122,6 @@ class FlowtimeTimer {
         });
         this.elements.breakBtn.addEventListener('click', () => this.startBreak());
         this.elements.stopBtn.addEventListener('click', () => this.stopTimer());
-
-        window.addEventListener('beforeunload', (e) => {
-            if (this.state.interval) {
-                e.preventDefault();
-                e.returnValue = '';
-            }
-        });
-
-        // Fullscreen related listeners
-        this.elements.fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
-        
-        document.addEventListener('fullscreenchange', () => {
-            if (document.fullscreenElement) {
-                this.enterFullscreen();
-            } else {
-                this.exitFullscreen();
-            }
-        });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.isFullscreen) {
-                this.exitFullscreen();
-                return;
-            }
-
-            const key = e.key.toLowerCase();
-            switch(key) {
-                case 's': 
-                    if (!this.elements.startBtn.disabled) this.startWork();
-                    break;
-                case 'b': 
-                    if (!this.elements.breakBtn.disabled) this.startBreak();
-                    break;
-                case 'x': 
-                    if (!this.elements.stopBtn.disabled) this.stopTimer();
-                    break;
-                case 'f': 
-                    this.toggleFullscreen();
-                    break;
-            }
-        });
-
-        // Fullscreen control buttons
-        this.elements.startBtnFS.addEventListener('click', () => {
-            if (!this.elements.startBtn.disabled) this.startWork();
-        });
-        this.elements.breakBtnFS.addEventListener('click', () => {
-            if (!this.elements.breakBtn.disabled) this.startBreak();
-        });
-        this.elements.stopBtnFS.addEventListener('click', () => {
-            if (!this.elements.stopBtn.disabled) this.stopTimer();
-        });
-        this.elements.exitFsBtn.addEventListener('click', () => this.exitFullscreen());
     }
 
     formatTime(seconds) {
@@ -269,38 +209,6 @@ class FlowtimeTimer {
         
         this.elements.status.textContent = 'Ready to start';
         this.elements.currentSession.textContent = '-';
-    }
-
-    toggleFullscreen() {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen();
-        } else {
-            document.exitFullscreen();
-        }
-    }
-
-    enterFullscreen() {
-        document.body.classList.add('fullscreen-mode');
-        this.elements.fullscreenBtn.querySelector('.fullscreen-icon').textContent = '⛗';
-        this.elements.fullscreenControls.hidden = false;
-        
-        // Hide focus sounds section in fullscreen mode
-        document.getElementById('focus-sounds').style.display = 'none';
-        
-        this.isFullscreen = true;
-    }
-    exitFullscreen() {
-        if (document.fullscreenElement) {
-            document.exitFullscreen();
-        }
-        document.body.classList.remove('fullscreen-mode');
-        this.elements.fullscreenBtn.querySelector('.fullscreen-icon').textContent = '⛶';
-        this.elements.fullscreenControls.hidden = true;
-        
-        // Show focus sounds section again
-        document.getElementById('focus-sounds').style.display = '';
-        
-        this.isFullscreen = false;
     }
 }
 
