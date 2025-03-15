@@ -1,5 +1,25 @@
 {
-  "devDependencies": {
-    "electron": "^35.0.1"
+  "name": "flowtime",
+  "version": "1.0.0",
+  "description": "A Flowtime timer application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "pack": "electron-builder --dir"
+  },
+    "build": {
+      "appId": "com.flowtime.app",
+      "productName": "Flowtime",
+      "directories": {
+        "output": "dist"
+      },
+      "win": {
+        "target": ["nsis", "portable"]
+      }
+    },
+    "devDependencies": {
+      "electron": "^35.0.1",
+      "electron-builder": "^24.9.1"
+    }
   }
-}
