@@ -36,8 +36,6 @@ The timer shows three main pieces of information:
 - Work duration
 - Recommended break time
 
-Use the fullscreen button (⛶) in the corner for a distraction-free experience. Press ESC to exit fullscreen mode.
-
 ## Tech Stack
 
 - HTML5
@@ -45,7 +43,3 @@ Use the fullscreen button (⛶) in the corner for a distraction-free experience.
 - Vanilla JavaScript
 - Responsive Design
 - Dark Mode Support
-
-# License
-
-MIT License
