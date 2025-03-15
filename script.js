@@ -9,10 +9,6 @@ class SidebarManager {
   }
 
   addEventListeners() {
-    // Toggle sidebar
-    this.toggleButton.addEventListener('click', () => {
-      this.toggleSidebar()
-    })
 
     // Handle window resize
     window.addEventListener('resize', () => {
