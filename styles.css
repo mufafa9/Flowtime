@@ -233,6 +233,46 @@ button:disabled {
 }
 
 /* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .buttons button {
+    width: 100%;
+  }
+
+  .stats {
+    padding-top: 0.5rem;
+  }
+
+  .stat-row {
+    font-size: 0.9rem;
+  }
+
+  .noise-controls {
+    padding: 0.5rem;
+  }
+
+  .noise-title {
+    font-size: 1rem;
+  }
+
+  .noise-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .volume-control {
+    font-size: 0.75rem;
+  }
+}
+
 @media (max-width: 480px) {
   h1 {
     font-size: 2rem;
@@ -244,6 +284,36 @@ button:disabled {
 
   .buttons {
     flex-direction: column;
+  }
+
+  .buttons button {
+    width: 100%;
+  }
+
+  .task-form input {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  .stat-row {
+    font-size: 0.8rem;
+  }
+
+  .noise-controls {
+    padding: 0.5rem;
+  }
+
+  .noise-title {
+    font-size: 0.9rem;
+  }
+
+  .noise-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .volume-control {
+    font-size: 0.75rem;
   }
 }
 
