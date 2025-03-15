@@ -70,6 +70,15 @@ body {
     opacity: 0;
   }
 }
+.sidebar.collapsed .sidebar-text {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+.sidebar .sidebar-text {
+  opacity: 1;
+  transition: opacity 0.3s ease-in;
+}
 
 .sidebar-header {
   padding: 20px;
@@ -99,10 +108,12 @@ body {
   margin-bottom: 4px;
 }
 
+
 .sidebar-nav a {
   display: flex;
   align-items: center;
-  padding: 12px 20px;
+  padding: 5px;
+  margin-left: 5px;
   color: var(--sidebar-text);
   text-decoration: none;
   transition: background-color var(--transition);
@@ -143,7 +154,7 @@ body {
   color: var(--sidebar-text);
   border: none;
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 5px;
   border-radius: 4px;
   transition: background-color var(--transition);
 }
