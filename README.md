@@ -1,7 +1,7 @@
 
 # FlowTime(FlowTimey)
 
-This Project is created to enable flow state and to be more productivity this project has a timer and a color noise generation section.
+This Project is created to enable flow state and to make you more productive this project has a timer and a color noise generation section.
 ## Authors
 
 - [@mufafa9](https://www.github.com/mufafa9)
