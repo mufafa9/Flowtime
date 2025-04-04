@@ -24,5 +24,8 @@
     "devDependencies": {
         "electron": "^35.0.1",
         "electron-builder": "^24.9.1"
+    },
+    "dependencies": {
+        "prettier": "^3.5.3"
     }
 }
